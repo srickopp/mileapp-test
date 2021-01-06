@@ -25,6 +25,12 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## Swagger Documentations
+If the project is already running you can visit:
+```
+http://localhost:3000/documentation
+```
 ## Stay in touch
 
 - Author - [Samuel Ricko](https://www.linkedin.com/in/samuelricko/)
