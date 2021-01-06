@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Res } from "@nestjs/common";
 import { Response } from "express";
-import { CreateTransaction } from "./dto/transaction.dto";
+import { CreateTransaction, TransactionDto } from "./dto/transaction.dto";
 import { TransactionService } from "./transaction.service";
 
 @Controller('package')
@@ -37,19 +37,19 @@ export class TransactionController {
     @Put('/:id')
     async update(
       @Param('id') id: string,
-      @Body('body') body: any,
+      @Body() body: TransactionDto,
       @Res() res: Response
     ){
-
+      return res.send(await this.transactionService.update(id, body));
     }
 
-    @Patch('/:id')
+    @Patch('/:id')    
     async Patch(
       @Param('id') id: string,
-      @Body('body') body: any,
+      @Body() body: TransactionDto,
       @Res() res: Response
     ){
-
+      return res.send(body)
     }
 
     @Delete('/:id')
@@ -57,7 +57,7 @@ export class TransactionController {
       @Param('id') id: string,      
       @Res() res: Response
     ){
-      
+      return res.send(await this.transactionService.deleteData(id));
     }
 
 }

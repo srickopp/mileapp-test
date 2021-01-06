@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import { CreateTransaction } from "./dto/transaction.dto";
+import { CreateTransaction, TransactionDto } from "./dto/transaction.dto";
 import { Connote, ConnoteDocument } from "./schema/connote.schema";
 import { Transaction, TransactionDocument, Koli } from "./schema/transaction.schema";
 
@@ -153,20 +153,49 @@ export class TransactionService {
         return transaction_data;
     }
 
-    async deleteData(id){
-        // Delete transaction data
-        await this.transactionModel.deleteOne({
-            _id: id
-        });
-
+    async deleteData(id){         
         // Delete connote
         await this.connoteModel.deleteOne({
             transaction_id: id
         });
 
-        return {
+        // Delete transaction data
+        const delete_data = await this.transactionModel.deleteOne({
+            _id: id
+        });        
 
+        if(delete_data.deletedCount > 0){
+            return {
+                success: true
+            }
+        }else{
+            return {
+                success: false
+            }
         }
+    }
+
+    async update(id, data: TransactionDto){
+        let connote_data = data.connote;        
+        let transaction_data_temp = data;
+        delete transaction_data_temp.connote;
+        let transaction_data = transaction_data_temp;
+
+        // Update connote;
+        await this.connoteModel.updateOne({
+            transaction_id: id
+        }, data);
+
+        // Update transaction
+        await this.transactionModel.updateOne({
+            _id: id
+        }, transaction_data_temp)
+
+        return await this.findOne(id);
+    }
+
+    async patch(id, data){
+
     }
 
     // Create AWB
