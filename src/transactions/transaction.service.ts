@@ -16,7 +16,7 @@ export class TransactionService {
         @InjectModel(Connote.name)
         private connoteModel: Model<ConnoteDocument>
     ){}
-
+    
     async createTransaction(data){
         let actual_weight: number = 0;    
         let volume_weight: number = 0;
@@ -151,6 +151,22 @@ export class TransactionService {
         delete transaction_data.__v;
 
         return transaction_data;
+    }
+
+    async deleteData(id){
+        // Delete transaction data
+        await this.transactionModel.deleteOne({
+            _id: id
+        });
+
+        // Delete connote
+        await this.connoteModel.deleteOne({
+            transaction_id: id
+        });
+
+        return {
+
+        }
     }
 
     // Create AWB

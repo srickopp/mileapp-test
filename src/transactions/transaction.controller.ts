@@ -1,9 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Res } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
 import { Response } from "express";
-import { Model } from "mongoose";
 import { CreateTransaction } from "./dto/transaction.dto";
-import { Transaction, TransactionDocument } from "./schema/transaction.schema";
 import { TransactionService } from "./transaction.service";
 
 @Controller('package')
@@ -28,6 +25,15 @@ export class TransactionController {
       return res.send(await this.transactionService.findOne(id));
     }
 
+    /**
+     * The differences between put and patch functions is, if you want to update just a specific field
+     * not a whole entity, you can use put.
+     * 
+     * Patch is required you to send a whole of the object to update the data.
+     * @param id 
+     * @param body 
+     * @param res 
+     */
     @Put('/:id')
     async update(
       @Param('id') id: string,
