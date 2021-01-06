@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Document } from 'mongoose';
+import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Transaction } from './transaction.schema';
 
 export type ConnoteDocument = Connote & Document;
@@ -91,8 +91,10 @@ export class Connote {
     @Prop()
     history: string[]
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' })
-    transaction: Transaction;
+    // @Prop({ type: Types.ObjectId, ref: Transaction.name })
+    // transaction: Transaction;
 }
+
+
 
 export const ConnoteSchema = SchemaFactory.createForClass(Connote);

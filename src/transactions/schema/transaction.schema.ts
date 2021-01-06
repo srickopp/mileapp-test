@@ -1,17 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Connote } from './connote.schema';
 
 export type TransactionDocument = Transaction & Document;
 
-class CustomerAttribute {
+export class CustomerAttribute {
   nama_sales: string;  
   TOP: string;  
   jenis_pelanggan: string;
 }
 
-class OriginDestinationData {  
+export class OriginDestinationData {  
     customer_name: string;
     customer_address: string;
     customer_email: string;
@@ -23,7 +23,7 @@ class OriginDestinationData {
     location_id: string;  
 }
 
-class Koli {  
+export class Koli {  
     koli_length: number;
     awb_url: string;
     created_at: string;
@@ -56,10 +56,10 @@ export class Transaction {
   customer_code: string;
 
   @Prop()
-  transaction_amount: string;
+  transaction_amount: number;
 
   @Prop()
-  transaction_discount: string;
+  transaction_discount: number;
 
   @Prop()
   transaction_additional_field: string;
@@ -74,22 +74,22 @@ export class Transaction {
   transaction_code: string;
 
   @Prop()
-  transaction_order: Number;
+  transaction_order: number;
 
   @Prop()
   location_id: string;
 
   @Prop()
-  organization_id: Number;
+  organization_id: number;
   
   @Prop()
   transaction_payment_type_name: string;
 
   @Prop()
-  transaction_cash_amount: Number;
+  transaction_cash_amount: number;
 
   @Prop()
-  transaction_cash_change: Number;  
+  transaction_cash_change: number;  
   
   @Prop()
   customer_attribute: CustomerAttribute; 
@@ -112,8 +112,8 @@ export class Transaction {
   @Prop()
   currentLocation: CustomField;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Connote' })
-  connote: Connote;
+  @Prop({ type: Types.ObjectId, ref: 'Connote' })
+  connote: Connote;  
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

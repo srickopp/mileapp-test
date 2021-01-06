@@ -8,7 +8,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    TransactionModule,        
+    TransactionModule,
     MongooseModule.forRoot(
       `mongodb+srv://${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}` 
     ,{      
