@@ -15,8 +15,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('Mile App Application - API')    
     .setVersion('1.0')
-    .addTag('mileapp')
-    .setSchemes('http')
+    .addTag('mileapp')      
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('documentation', app, document);
