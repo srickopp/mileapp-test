@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import * as dotenv from 'dotenv';
 import { TransactionModule } from './transactions/transaction.module';
 dotenv.config();
@@ -21,7 +19,7 @@ dotenv.config();
       "useUnifiedTopology": true
     }),
   ],  
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

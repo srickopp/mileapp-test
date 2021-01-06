@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import { CreateTransaction } from "./dto/transaction.dto";
+import { TransactionDto } from "./dto/transaction.dto";
 import { Connote, ConnoteDocument } from "./schema/connote.schema";
 import { Transaction, TransactionDocument, Koli } from "./schema/transaction.schema";
 
@@ -16,7 +16,7 @@ export class TransactionService {
         @InjectModel(Connote.name)
         private connoteModel: Model<ConnoteDocument>
     ){}
-
+    
     async createTransaction(data){
         let actual_weight: number = 0;    
         let volume_weight: number = 0;
@@ -135,6 +135,14 @@ export class TransactionService {
     }
 
     async findOne(id){
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
+
         let connote_data = await this.connoteModel.findOne({
             transaction_id: id
         });
@@ -151,6 +159,66 @@ export class TransactionService {
         delete transaction_data.__v;
 
         return transaction_data;
+    }
+
+    async deleteData(id){      
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
+
+        // Delete connote
+        await this.connoteModel.deleteOne({
+            transaction_id: id
+        });
+
+        // Delete transaction data
+        const delete_data = await this.transactionModel.deleteOne({
+            _id: id
+        });        
+
+        if(delete_data.deletedCount > 0){
+            return {
+                success: true
+            }
+        }else{
+            return {
+                success: false
+            }
+        }
+    }
+
+    async update(id, data: TransactionDto){
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
+        let connote_data = data.connote;        
+        let transaction_data_temp = data;
+        delete transaction_data_temp.connote;
+        let transaction_data:any = transaction_data_temp;
+
+        // Update connote;
+        await this.connoteModel.updateOne({
+            transaction_id: id
+        }, data);
+
+        // Update transaction
+        await this.transactionModel.updateOne({
+            _id: id
+        }, transaction_data)
+
+        return await this.findOne(id);
+    }
+
+    async patch(id, data){
+
     }
 
     // Create AWB
