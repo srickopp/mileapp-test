@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Res } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { CreateTransaction, TransactionDto, TransactionPatchDto } from "./dto/transaction.dto";
 import { TransactionService } from "./transaction.service";
 
+@ApiTags('Mile-APP')
 @Controller('package')
 export class TransactionController {
     constructor(
