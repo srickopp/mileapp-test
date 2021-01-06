@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Res } from "@nestjs/common";
 import { Response } from "express";
-import { CreateTransaction, TransactionDto } from "./dto/transaction.dto";
+import { CreateTransaction, TransactionDto, TransactionPatchDto } from "./dto/transaction.dto";
 import { TransactionService } from "./transaction.service";
 
 @Controller('package')
@@ -61,10 +61,10 @@ export class TransactionController {
     @Patch('/:id')    
     async Patch(
       @Param('id') id: string,
-      @Body() body: TransactionDto,
+      @Body() body: TransactionPatchDto,
       @Res() res: Response
     ){
-      return res.send(body)
+      return res.send(await this.transactionService.update(id, body));
     }
 
     /**

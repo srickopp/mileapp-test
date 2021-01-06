@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
-import { CreateTransaction, TransactionDto } from "./dto/transaction.dto";
+import { TransactionDto } from "./dto/transaction.dto";
 import { Connote, ConnoteDocument } from "./schema/connote.schema";
 import { Transaction, TransactionDocument, Koli } from "./schema/transaction.schema";
 
@@ -135,6 +135,14 @@ export class TransactionService {
     }
 
     async findOne(id){
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
+
         let connote_data = await this.connoteModel.findOne({
             transaction_id: id
         });
@@ -153,7 +161,15 @@ export class TransactionService {
         return transaction_data;
     }
 
-    async deleteData(id){         
+    async deleteData(id){      
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
+
         // Delete connote
         await this.connoteModel.deleteOne({
             transaction_id: id
@@ -176,10 +192,17 @@ export class TransactionService {
     }
 
     async update(id, data: TransactionDto){
+        // Find Data
+        const find_data = await this.transactionModel.findOne({ _id: id});
+        if(!find_data){
+            throw new HttpException({
+                message: "Data not found"
+            }, 404);
+        }
         let connote_data = data.connote;        
         let transaction_data_temp = data;
         delete transaction_data_temp.connote;
-        let transaction_data = transaction_data_temp;
+        let transaction_data:any = transaction_data_temp;
 
         // Update connote;
         await this.connoteModel.updateOne({
@@ -189,7 +212,7 @@ export class TransactionService {
         // Update transaction
         await this.transactionModel.updateOne({
             _id: id
-        }, transaction_data_temp)
+        }, transaction_data)
 
         return await this.findOne(id);
     }
