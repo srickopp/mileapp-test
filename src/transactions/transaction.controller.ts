@@ -9,17 +9,29 @@ export class TransactionController {
         private readonly transactionService: TransactionService
     ){}    
 
+    /**
+     * This function will handle about creating a data with parameters:
+     * @param body : CreateTransactionDto     
+     */
     @Post()
     async createPackageTransactions(@Body() body: CreateTransaction, @Res() res: Response){
       const create_transaction = await this.transactionService.createTransaction(body)
       return res.send(create_transaction)
     }
 
+    /**
+     * This functions will handle about get all the data
+     * and not required any function
+     */
     @Get()
     async getAll(@Res() res: Response){
         return res.send(await this.transactionService.getAll())
     }
 
+    /**
+     * This function will return a specific data with parameter transaction id
+     * @param id     
+     */
     @Get('/:id')
     async findOne(@Param('id') id: string, @Res() res: Response){
       return res.send(await this.transactionService.findOne(id));
@@ -30,6 +42,9 @@ export class TransactionController {
      * not a whole entity, you can use put.
      * 
      * Patch is required you to send a whole of the object to update the data.
+     * In this case i'll just make a different at validations flow
+     * 
+     * If you choose call patch endpoint there's no problem is you just send a specific field
      * @param id 
      * @param body 
      * @param res 
@@ -42,7 +57,7 @@ export class TransactionController {
     ){
       return res.send(await this.transactionService.update(id, body));
     }
-
+    
     @Patch('/:id')    
     async Patch(
       @Param('id') id: string,
@@ -52,6 +67,10 @@ export class TransactionController {
       return res.send(body)
     }
 
+    /**
+     * This function is handle to delete a data with parameter:
+     * @param id       
+     */
     @Delete('/:id')
     async deleteData(
       @Param('id') id: string,      
