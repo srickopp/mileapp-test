@@ -1,1 +1,0 @@
-{"version":3,"file":"customer_attribute.schema.js","sourceRoot":"","sources":["../../../src/transactions/schema/customer_attribute.schema.ts"],"names":[],"mappings":";;;AAAA,qCAAqC;AAExB,QAAA,uBAAuB,GAAG,IAAI,QAAQ,CAAC,MAAM,CAAC;IACvD,UAAU,EAAE,MAAM;IAClB,GAAG,EAAE,MAAM;IACX,eAAe,EAAE,MAAM;CAC1B,EAAC;IACE,GAAG,EAAE,KAAK;CACb,CAAC,CAAA"}
