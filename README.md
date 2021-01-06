@@ -1,6 +1,9 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is used:
+- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- MongoDB
+
 
 ## Installation
 
@@ -16,7 +19,7 @@ Just create .env file and the content is like at the content of example.env file
 # development
 $ npm run start
 
-# watch mode
+# watch mode -- recomended way to test the programs
 $ npm run start:dev
 
 # production mode
